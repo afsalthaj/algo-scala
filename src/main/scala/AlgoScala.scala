@@ -15,9 +15,9 @@ object AlgoScala {
     * multiplication algorithms.
     */
   def karatSuba(x: String, y: String): BigInt = {
-    def go(xx: String, yy: String): BigInt = {
-      if (yy.length <=2 || xx.length <= 2) {
-        BigInt(xx) * BigInt(yy)
+    def go(xx: BigInt, yy: BigInt): BigInt = {
+      if (yy <=2 || xx <= 2) {
+        xx * yy
       }
       else {
         val xString = xx.toString.toList
@@ -29,9 +29,9 @@ object AlgoScala {
         val b = BigInt(xString.drop(xSplitt).mkString)
         val c = BigInt(yString.take(ySplitt).mkString)
         val d = BigInt(yString.drop(ySplitt).mkString)
-        val ac = go(a.toString, c.toString)
-        val bd = go(b.toString, d.toString)
-        val abcd = go((a + b).toString, (c + d).toString)
+        val ac = go(a, c)
+        val bd = go(b, d)
+        val abcd = go(a + b, c + d)
         val adplusbc = abcd - (ac + bd)
         val toBeFilled = BigInt(s"10${List.fill(halfN * 2)(0).mkString}")
         val secondToBeFilled = BigInt(s"10${List.fill(halfN)(0).mkString}")
@@ -39,7 +39,7 @@ object AlgoScala {
       }
     }
 
-    go(x, y)
+    go(BigInt(x), BigInt(y))
   }
 
   // To be avoided: use of string? Bit Opertions?
