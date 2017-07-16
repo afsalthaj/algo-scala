@@ -1,5 +1,7 @@
 import java.math.BigInteger
 
+import MergeSort.mergeSort
+
 
 /**
   * Created by afsalthaj on 7/10/17.
@@ -34,8 +36,12 @@ object AlgoScala {
   }
 
   def main(args: Array[String]): Unit = {
-   // val result = myAwesomeMultiplication("3141592653589793238462643383279502884197169399375105820974944592", "2718281828459045235360287471352662497757247093699959574966967627")
-   // println (result)
-    println( MergeSort.mergeSort(List(3,2,1,0,5,6,9,7,7,10,11,12,13,15,14,11,12,13,14)))
-
+    val result = myAwesomeMultiplication(
+      "3141592653589793238462643383279502884197169399375105820974944592",
+      "2718281828459045235360287471352662497757247093699959574966967627")
+    println (result)
+    println(mergeSort(List(3,2,1,0,5,6,9,7,7,10,11,12,13,15,14,11,12,13,14,3)))
+    println(mergeSort(List(1)))
+    println(mergeSort(List()))
+    println(mergeSort(List(-1, 1, -2, 0)))
   }}

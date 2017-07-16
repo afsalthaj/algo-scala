@@ -12,6 +12,9 @@ object MergeSort {
       }
     }
 
+   if(x.size < 2)
+     x
+   else {
     val firstSection = x.take(x.size / 2)
     //println (firstSection)
     val secondSection = x.drop(firstSection.size)
@@ -25,6 +28,7 @@ object MergeSort {
         val continueSorting1 = mergeSort(firstSection)
         val continueSorting2 = mergeSort(secondSection)
         inner(continueSorting1, continueSorting2, Nil)
+    }
     }
   }
 }
