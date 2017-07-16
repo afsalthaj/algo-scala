@@ -4,20 +4,27 @@
 object MergeSort {
   def mergeSort(x: List[Int]): List[Int] = {
     def inner(a: List[Int], b: List[Int], acc: List[Int]): List[Int] = {
-      if (a.isEmpty)
-        acc ++ b
-      else if (b.isEmpty) acc ++ a
-      else if (a.head < b.head)
-        inner(a.tail, b, acc ++ List(a.head))
-      else inner(b, b.tail, acc ++ List(b.head))
+      (a, b) match {
+        case (Nil, bs) => acc ++ b
+        case (as, Nil) => acc ++ a
+        case (as, bs) if as.head < bs.head => inner(as.tail, bs, acc ++ List(a.head))
+        case _ => inner(a, b.tail, acc ++ List(b.head))
+      }
     }
 
     val firstSection = x.take(x.size / 2)
-    val secondSection = x.drop(x.size / 2)
+    //println (firstSection)
+    val secondSection = x.drop(firstSection.size)
 
-    val sortFirst = mergeSort(firstSection)
-    val sortSecond = mergeSort(secondSection)
-    inner(sortFirst, sortSecond, Nil)
-
+    firstSection.size match {
+      case 1 =>
+        inner(firstSection,
+          if (secondSection.size > 1)
+            mergeSort(secondSection) else secondSection, Nil)
+      case _ =>
+        val continueSorting1 = mergeSort(firstSection)
+        val continueSorting2 = mergeSort(secondSection)
+        inner(continueSorting1, continueSorting2, Nil)
+    }
   }
 }
