@@ -23,8 +23,7 @@ object MergeSort {
       }
     }
 
-    if (x.size < 2)
-      (0, x)
+    if (x.size < 2) (0, x)
     else {
       val firstSection = x.take(x.size / 2)
       //println (firstSection)
