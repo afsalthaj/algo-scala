@@ -7,7 +7,7 @@ import MergeSort.mergeSortAndFindInv
   * Created by afsalthaj on 7/10/17.
   */
 object AlgoScala {
-  def myAwesomeMultiplication(x: String, y: String): BigInt = {
+  def karatsuba(x: String, y: String): BigInt = {
     def go(xx: String, yy: String): BigInt = {
       if (yy.length <=2 || xx.length <= 2) {
         BigInt(xx) * BigInt(yy)
@@ -36,7 +36,7 @@ object AlgoScala {
   }
 
   def main(args: Array[String]): Unit = {
-    val result = myAwesomeMultiplication(
+    val result = karatsuba(
       "3141592653589793238462643383279502884197169399375105820974944592",
       "2718281828459045235360287471352662497757247093699959574966967627")
     require(result == BigInt("853906976228112049612749053421339067407668089349316557309830025183339413920507978129391484498545282208081466991074804737627824019484"))
