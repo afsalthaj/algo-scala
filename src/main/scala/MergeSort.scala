@@ -10,7 +10,7 @@ object MergeSort {
     * brute force approach of iterating one by one, instead it is n*logn since
     * the running time of a merge sort is n log n.
     */
-  def mergeSort(x: List[Int]): (Int, List[Int]) = {
+  def mergeSortAndFindInv(x: List[Int]): (Int, List[Int]) = {
     def inner(a: List[Int], b: List[Int], acc: List[Int], inversions: Int): (Int, List[Int]) = {
       (a, b) match {
         case (Nil, bs) => (inversions, acc ++ b)
@@ -31,14 +31,13 @@ object MergeSort {
       val secondSection = x.drop(firstSection.size)
 
       firstSection.size match {
-        case 1 => {
+        case 1 =>
           val (inv, actualSecondSection) =
-            if (secondSection.size > 1) mergeSort(secondSection) else (0, secondSection)
+            if (secondSection.size > 1) mergeSortAndFindInv(secondSection) else (0, secondSection)
           inner(firstSection, actualSecondSection, Nil, inv)
-        }
         case _ =>
-          val (inversions1, continueSorting1) = mergeSort(firstSection)
-          val (inversions2, continueSorting2) = mergeSort(secondSection)
+          val (inversions1, continueSorting1) = mergeSortAndFindInv(firstSection)
+          val (inversions2, continueSorting2) = mergeSortAndFindInv(secondSection)
           inner(continueSorting1, continueSorting2, Nil, inversions1 + inversions2)
       }
     }
