@@ -76,7 +76,7 @@ object Algorithms {
 
   /**
     * According to master theorem
-    * a; number of recursions = 2
+    * a; number of recursions = 1
     * b; shrinkage factor = 2
     * d = 0 (as there are zero steps outside recursion)
     * T(n) <= n log n
