@@ -79,7 +79,7 @@ object Algorithms {
     * a; number of recursions = 1
     * b; shrinkage factor = 2
     * d = 0 (as there are zero steps outside recursion)
-    * T(n) <= n log n
+    * T(n) <= log n
     */
   def binarySearch(xx: List[Int], y: Int): Boolean = {
     val firstHalf = xx.take(xx.size / 2)
