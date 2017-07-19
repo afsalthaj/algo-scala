@@ -1,5 +1,7 @@
 import Algorithms._
 
+import scala.io.BufferedSource
+
 /**
   * Created by afsalthaj on 7/10/17.
   */
@@ -17,10 +19,14 @@ object Main {
     require(mergeSortAndFindInv(List(-1, 1, -2, 0, -3)) == (7,List(-3, -2, -1, 0, 1)))
     require(mergeSortAndFindInv(List(5,4,3,2)) == (6,List(2, 3, 4, 5)) )
     require(mergeSortAndFindInv(List(1,3,5,2,4,6)) == (3,List(1, 2, 3, 4, 5, 6)))
+    require(mergeSortAndFindInv(List(1,3,5,2,4,6,9,10,11,0,1,2,3)) ==
+      (36,List(0, 1, 1, 2, 2, 3, 3, 4, 5, 6, 9, 10, 11)))
     require(binarySearch(List(1, 2, 3), 3))
     require(!binarySearch(List(1, 2, 3), 4))
     require(binarySearch((0 to 50000).toList, 25001))
     require(!binarySearch(List(0), 4))
     require(!binarySearch(Nil, 4))
     require(binarySearch(List(-1, 2, 0, 1, 2), -1))
+    val line: Iterator[String] = scala.io.Source.fromFile("/Users/afsalthaj/scalatest").getLines()
+    println(mergeSortAndFindInv(line.toList.map(_.toInt)))
   }}
