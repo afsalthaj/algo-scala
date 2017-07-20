@@ -1,3 +1,6 @@
+import scala.collection.mutable
+import scala.collection.mutable.{ArrayBuffer, ListBuffer}
+
 /**
   * Created by afsalthaj on 7/16/17.
   */
@@ -40,20 +43,18 @@ object Algorithms {
     * to reach a number less than 1. The algorithm makes use of merge sort to find
     * the number of inversions in the array. The running time is not n^^2 as in
     * brute force approach of iterating one by one, instead it is n*logn since
-    * the running time of a merge sort is n log n.
+    * the running time of a merge sort is n log n. MutableList is provided to avoid
+    * the addition `n` factor in append operations with immutable list during recursions.
     */
-  def mergeSortAndFindInv(x: List[Int]): (BigInt, List[Int]) = {
-    def inner(a: List[Int], b: List[Int], acc: List[Int], inversions: BigInt): (BigInt, List[Int]) = {
-      (a, b) match {
-        case (Nil, bs) => (inversions, acc ++ b)
-        case (as, Nil) => (inversions, acc ++ a)
-          //n ^^ 2 complexity here as the append operation is another n.
-        case (as, bs) if as.head < bs.head => inner(as.tail, bs, acc ++ List(a.head) , inversions)
-        // The number of inversion when you had to copy a number from right side to the result
-        // is equal to the size of the rest of the elements in the first list from the number
-        // that is being compared
-        case _ => inner(a, b.tail, acc ++ List(b.head), inversions + a.size)
-      }
+  def mergeSortAndFindInv(x: mutable.MutableList[Int]): (BigInt, mutable.MutableList[Int]) = {
+    def inner(a: mutable.MutableList[Int], b: mutable.MutableList[Int],
+              acc: mutable.MutableList[Int], inversions: BigInt): (BigInt, mutable.MutableList[Int]) = {
+      if(a.isEmpty)
+        (inversions, acc ++= b)
+      else if (b.isEmpty)
+        (inversions, acc ++= a)
+      else if (a.head < b.head) inner(a.tail, b, acc += a.head , inversions)
+      else inner(a, b.tail, acc += b.head, inversions + a.size)
     }
 
     if (x.size < 2) (0, x)
@@ -62,7 +63,7 @@ object Algorithms {
       val secondSection = x.drop(firstSection.size)
       val (inversions1, continueSorting1) = mergeSortAndFindInv(firstSection)
       val (inversions2, continueSorting2) = mergeSortAndFindInv(secondSection)
-      inner(continueSorting1, continueSorting2, Nil, inversions1 + inversions2)
+      inner(continueSorting1, continueSorting2, mutable.MutableList[Int](), inversions1 + inversions2)
     }
   }
 
