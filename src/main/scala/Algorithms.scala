@@ -66,30 +66,6 @@ object Algorithms {
     }
   }
 
-  def mergeSortAndFindInvW(x: List[Int]): List[Int] = {
-    def inner(a: List[Int], b: List[Int], acc: List[Int]): List[Int] = {
-      if (a.size > 1000)
-        println (a)
-      (a, b) match {
-        case (Nil, bs) => acc ++ b
-        case (as, Nil) => acc ++ a
-        case (as, bs) if as.head < bs.head => inner(as.tail, bs, acc ++ List(a.head))
-        // The number of inversion when you had to copy a number from right side to the result
-        // is equal to the size of the rest of the elements in the first list from the number
-        // that is being compared
-        case _ => inner(a, b.tail, acc ++ List(b.head))
-      }
-    }
-
-    if (x.size < 2) x
-    else {
-      val firstSection = x.take(x.size / 2)
-      val secondSection = x.drop(firstSection.size)
-      inner(mergeSortAndFindInvW(firstSection), mergeSortAndFindInvW(secondSection), Nil)
-    }
-  }
-
-
   /**
     * According to master theorem
     * a; number of recursions = 1

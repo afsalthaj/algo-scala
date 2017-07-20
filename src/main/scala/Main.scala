@@ -28,5 +28,5 @@ object Main {
     require(!binarySearch(Nil, 4))
     require(binarySearch(List(-1, 2, 0, 1, 2), -1))
     val line: Iterator[String] = scala.io.Source.fromFile("/Users/afsalthaj/scalatest").getLines()
-    println(mergeSortAndFindInvW(line.toList.map(_.toInt)))
+    println(mergeSortAndFindInv(line.toList.map(_.toInt)))
   }}
