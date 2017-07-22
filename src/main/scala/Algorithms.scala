@@ -92,34 +92,31 @@ object Algorithms {
     * is highly oriented to `in-place` approach
     * where memory efficiency is taken into account.
     */
-  def quickSort(a: Array[Int]): Array[Int] = {
+  def quickSort(inputArray: Array[Int]): Array[Int] = {
     def partitionSubroutine(pivotElementIndex: Int, deadEnd: Int): Unit = {
       if (pivotElementIndex >= deadEnd) ()
       else {
         var i = pivotElementIndex + 1
-        val pivotElement = a(pivotElementIndex)
+        val pivotElement = inputArray(pivotElementIndex)
         val j = (pivotElementIndex + 1) to deadEnd
         j.foreach(index => {
-          if (a(index) < pivotElement) {
-            val temp = a(i)
-            a(i) = a(index)
-            a(index) = temp
+          if (inputArray(index) < pivotElement) {
+            val temp = inputArray(i)
+            inputArray(i) = inputArray(index)
+            inputArray(index) = temp
             i += 1
           }
         })
-        val temp = a(pivotElementIndex)
-        a(pivotElementIndex) = a(i - 1)
-        a(i - 1) = temp
+        val temp = inputArray(pivotElementIndex)
+        inputArray(pivotElementIndex) = inputArray(i - 1)
+        inputArray(i - 1) = temp
         partitionSubroutine(i, deadEnd)
         partitionSubroutine(0, i - 1)
       }
     }
 
-    if (a.isEmpty) a
-    else {
-      partitionSubroutine(0, a.length - 1)
-      a
-    }
+    partitionSubroutine(0, inputArray.length - 1)
+    inputArray
   }
 }
 
