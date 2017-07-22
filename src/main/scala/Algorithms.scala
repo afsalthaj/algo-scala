@@ -101,9 +101,11 @@ object Algorithms {
         val j = (pivotElementIndex + 1) to deadEnd
         j.foreach(index => {
           if (inputArray(index) < pivotElement) {
-            val temp = inputArray(i)
-            inputArray(i) = inputArray(index)
-            inputArray(index) = temp
+            if (i != index) {
+              val temp = inputArray(i)
+              inputArray(i) = inputArray(index)
+              inputArray(index) = temp
+            }
             i += 1
           }
         })
