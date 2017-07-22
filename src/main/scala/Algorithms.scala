@@ -1,5 +1,4 @@
 import scala.collection.mutable
-import scala.collection.mutable.{ArrayBuffer, ListBuffer}
 
 /**
   * Created by afsalthaj on 7/16/17.
@@ -49,11 +48,11 @@ object Algorithms {
   def mergeSortAndFindInv(x: mutable.MutableList[Int]): (BigInt, mutable.MutableList[Int]) = {
     def inner(a: mutable.MutableList[Int], b: mutable.MutableList[Int],
               acc: mutable.MutableList[Int], inversions: BigInt): (BigInt, mutable.MutableList[Int]) = {
-      if(a.isEmpty)
+      if (a.isEmpty)
         (inversions, acc ++= b)
       else if (b.isEmpty)
         (inversions, acc ++= a)
-      else if (a.head < b.head) inner(a.tail, b, acc += a.head , inversions)
+      else if (a.head < b.head) inner(a.tail, b, acc += a.head, inversions)
       else inner(a, b.tail, acc += b.head, inversions + a.size)
     }
 
@@ -86,4 +85,41 @@ object Algorithms {
     else
       binarySearch(firstHalf, y)
   }
+
+  /**
+    * quick sort O(n) is the running time.
+    * Mutation process is followed since quick sort
+    * is highly oriented to `in-place` approach
+    * where memory efficiency is taken into account.
+    */
+  def quickSort(a: Array[Int]): Array[Int] = {
+    def partitionSubroutine(pivotElementIndex: Int, deadEnd: Int): Unit = {
+      if (pivotElementIndex >= deadEnd) ()
+      else {
+        var i = pivotElementIndex + 1
+        val pivotElement = a(pivotElementIndex)
+        val j = (pivotElementIndex + 1) to deadEnd
+        j.foreach(index => {
+          if (a(index) < pivotElement) {
+            val temp = a(i)
+            a(i) = a(index)
+            a(index) = temp
+            i += 1
+          }
+        })
+        val temp = a(pivotElementIndex)
+        a(pivotElementIndex) = a(i - 1)
+        a(i - 1) = temp
+        partitionSubroutine(i, deadEnd)
+        partitionSubroutine(0, i - 1)
+      }
+    }
+
+    if (a.isEmpty) a
+    else {
+      partitionSubroutine(0, a.length - 1)
+      a
+    }
+  }
 }
+
