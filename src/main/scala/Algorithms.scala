@@ -91,9 +91,62 @@ object Algorithms {
     * Mutation process is followed since quick sort
     * is highly oriented to `in-place` approach
     * where memory efficiency is taken into account.
+    * Please note that, the `strategy` applied before calling
+    * recursion is based on:
+    * https://stackoverflow.com/questions/33815273/quicksort-worst-case-results-in-stack-overflow#33816144
     */
+  def quickSort(inputArray: Array[Int]): Array[Int] = {
+    def partitionSubroutine(pivotElementIndex: Int, deadEnd: Int): Unit = {
+      var i = pivotElementIndex + 1
+      val pivotElement = inputArray(pivotElementIndex)
+      val j = (pivotElementIndex + 1) to deadEnd
+      j.foreach(index => {
+        if (inputArray(index) < pivotElement) {
+          if (i != index) {
+            val temp = inputArray(i)
+            inputArray(i) = inputArray(index)
+            inputArray(index) = temp
+          }
+          i += 1
+        }
+      })
+      val temp = inputArray(pivotElementIndex)
+      inputArray(pivotElementIndex) = inputArray(i - 1)
+      inputArray(i - 1) = temp
 
-  def quickSort(array: Array[Int]): Array[Int] = {
+      var leftStrategy = (i - 2) - pivotElementIndex
+      var righStratgy  = (deadEnd - i)
+
+      if (leftStrategy <= righStratgy) {
+        if (pivotElementIndex <= (i - 2)) {
+          partitionSubroutine(pivotElementIndex, i - 2)
+        }
+        if (i <= deadEnd) {
+          partitionSubroutine(i, deadEnd)
+        }
+      }
+
+      else {
+        if (i <= deadEnd) {
+          partitionSubroutine(i, deadEnd)
+        }
+        if (pivotElementIndex <= (i - 2)) {
+          partitionSubroutine(pivotElementIndex, i - 2)
+        }
+      }
+    }
+    partitionSubroutine(0, inputArray.length - 1)
+    inputArray
+  }
+
+  /**
+    * this quick sort is same as that of before, where the partition
+    * call returns the position of `i`, which is then passed again
+    * to the subroutine explicitly. The only difference is `easy to understand`
+    * the strategy to avoid stack overflow.
+    * https://stackoverflow.com/questions/33815273/quicksort-worst-case-results-in-stack-overflow#33816144
+    */
+  def quickSort_(array: Array[Int]): Array[Int] = {
     def quickSortM(A: Array[Int], l: Int, r: Int): Array[Int] = {
       def partitionSubroutine(l: Int, r: Int): Int = {
         var i = l + 1
