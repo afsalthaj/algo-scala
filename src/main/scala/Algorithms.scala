@@ -94,8 +94,7 @@ object Algorithms {
     */
   def quickSort(inputArray: Array[Int]): Array[Int] = {
     def partitionSubroutine(pivotElementIndex: Int, deadEnd: Int): Unit = {
-      if (pivotElementIndex >= deadEnd) ()
-      else {
+      println("the pivotElement Index is" + pivotElementIndex + " the deadEnd is " + deadEnd + " " + inputArray.toList)
         var i = pivotElementIndex + 1
         val pivotElement = inputArray(pivotElementIndex)
         val j = (pivotElementIndex + 1) to deadEnd
@@ -112,13 +111,18 @@ object Algorithms {
         val temp = inputArray(pivotElementIndex)
         inputArray(pivotElementIndex) = inputArray(i - 1)
         inputArray(i - 1) = temp
-        partitionSubroutine(i, deadEnd)
-        partitionSubroutine(0, i - 1)
-      }
+
+        if (pivotElementIndex <= (i - 2)) {
+          partitionSubroutine(pivotElementIndex, i - 2)
+        }
+        if (i <= deadEnd) {
+          partitionSubroutine(i, deadEnd)
+        }
+
+
     }
 
     partitionSubroutine(0, inputArray.length - 1)
     inputArray
   }
 }
-
