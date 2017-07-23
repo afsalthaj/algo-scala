@@ -92,37 +92,44 @@ object Algorithms {
     * is highly oriented to `in-place` approach
     * where memory efficiency is taken into account.
     */
-  def quickSort(inputArray: Array[Int]): Array[Int] = {
-    def partitionSubroutine(pivotElementIndex: Int, deadEnd: Int): Unit = {
-      println("the pivotElement Index is" + pivotElementIndex + " the deadEnd is " + deadEnd + " " + inputArray.toList)
-        var i = pivotElementIndex + 1
-        val pivotElement = inputArray(pivotElementIndex)
-        val j = (pivotElementIndex + 1) to deadEnd
-        j.foreach(index => {
-          if (inputArray(index) < pivotElement) {
+
+  def quickSort(array: Array[Int]): Array[Int] = {
+    def quickSortM(A: Array[Int], l: Int, r: Int): Array[Int] = {
+      def partitionSubroutine(l: Int, r: Int): Int = {
+        var i = l + 1
+        ((l + 1) to r).foreach(index => {
+          if (A(index) < A(l)) {
             if (i != index) {
-              val temp = inputArray(i)
-              inputArray(i) = inputArray(index)
-              inputArray(index) = temp
+              val temp = A(i)
+              A(i) = A(index)
+              A(index) = temp
             }
             i += 1
           }
         })
-        val temp = inputArray(pivotElementIndex)
-        inputArray(pivotElementIndex) = inputArray(i - 1)
-        inputArray(i - 1) = temp
+        val temp = A(l)
+        A(l) = A(i - 1)
+        A(i - 1) = temp
 
-        if (pivotElementIndex <= (i - 2)) {
-          partitionSubroutine(pivotElementIndex, i - 2)
+        i - 1
+      }
+
+      if (r - l < 1) {
+        A
+      }
+      else {
+        val p = partitionSubroutine(l, r)
+        if (((p - 1) - l ) <= (r - (p + 1))) {
+          quickSortM(A, l, p - 1)
+          quickSortM(A, p + 1, r)
         }
-        if (i <= deadEnd) {
-          partitionSubroutine(i, deadEnd)
+        else {
+          quickSortM(A, p + 1, r)
+          quickSortM(A, l, p - 1)
         }
-
-
+      }
     }
 
-    partitionSubroutine(0, inputArray.length - 1)
-    inputArray
+    quickSortM(array, 0, array.length - 1)
   }
 }
