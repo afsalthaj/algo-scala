@@ -27,15 +27,15 @@ object Main {
     require(!binarySearch(List(0), 4))
     require(!binarySearch(Nil, 4))
     require(binarySearch(List(-1, 2, 0, 1, 2), -1))
-    require(quickSort(Array(3, 8, 2, 5, 1, 4, 7, 6)).toList == List(1, 2, 3, 4, 5, 6, 7, 8))
-    require(quickSort(Array(3, 8, 2, 5, 1, 4, 7)).toList == List(1, 2, 3, 4, 5, 7, 8))
-    require(quickSort(Array(4, 6, 5)).toList == List(4, 5, 6))
-    require(quickSort(Array(3, 8)).toList == List(3, 8))
-    require(quickSort(Array(8)).toList == List(8))
-  //  require(quickSort(Array()).toList == Nil)
-    require(quickSort(Array(1000, 999, 998)).toList == List(998, 999, 1000))
-    require(quickSort(Array(1000, 999, 998, 997)).toList == List(997, 998, 999, 1000))
-    require(quickSort(Array(999999, 999998, 999997, 999996,
+    require(quickSort_Pivot_First(Array(3, 8, 2, 5, 1, 4, 7, 6)).toList == List(1, 2, 3, 4, 5, 6, 7, 8))
+    require(quickSort_Pivot_First(Array(3, 8, 2, 5, 1, 4, 7)).toList == List(1, 2, 3, 4, 5, 7, 8))
+    require(quickSort_Pivot_First(Array(4, 6, 5)).toList == List(4, 5, 6))
+    require(quickSort_Pivot_First(Array(3, 8)).toList == List(3, 8))
+    require(quickSort_Pivot_First(Array(8)).toList == List(8))
+    //  require(quickSort(Array()).toList == Nil)
+    require(quickSort_Pivot_First(Array(1000, 999, 998)).toList == List(998, 999, 1000))
+    require(quickSort_Pivot_First(Array(1000, 999, 998, 997)).toList == List(997, 998, 999, 1000))
+    require(quickSort_Pivot_First(Array(999999, 999998, 999997, 999996,
       999995, 999994, 999993, 999992, 999991, 999990, 999989,
       999987, 999986, 999985, 999984, 999983, 999982, 999981, 999980,
       999979, 999978, 999977, 999976, 999975, 999974, 999973, 999972)).toList ==
@@ -43,16 +43,16 @@ object Main {
         999983, 999984, 999985, 999986, 999987, 999989, 999990, 999991, 999992, 999993, 999994, 999995,
         999996, 999997, 999998, 999999))
     val array = (0 to 7).reverse.toArray
-    println("this is the result " + quickSort(array).toList)
-    require(quickSort(Array(3, 8, 2, 5, 1, 4, 7, 6)).toList == List(1, 2, 3, 4, 5, 6, 7, 8))
-    require(quickSort(Array(3, 8, 2, 5, 1, 4, 7)).toList == List(1, 2, 3, 4, 5, 7, 8))
-    require(quickSort(Array(4, 6, 5)).toList == List(4, 5, 6))
-    require(quickSort(Array(3, 8)).toList == List(3, 8))
-    require(quickSort(Array(8)).toList == List(8))
+    println("this is the result " + quickSort_Pivot_First(array).toList)
+    require(quickSort_Pivot_First(Array(3, 8, 2, 5, 1, 4, 7, 6)).toList == List(1, 2, 3, 4, 5, 6, 7, 8))
+    require(quickSort_Pivot_First(Array(3, 8, 2, 5, 1, 4, 7)).toList == List(1, 2, 3, 4, 5, 7, 8))
+    require(quickSort_Pivot_First(Array(4, 6, 5)).toList == List(4, 5, 6))
+    require(quickSort_Pivot_First(Array(3, 8)).toList == List(3, 8))
+    require(quickSort_Pivot_First(Array(8)).toList == List(8))
     //    require(quickSort(Array()).toList == Nil)
-    require(quickSort(Array(1000, 999, 998)).toList == List(998, 999, 1000))
-    require(quickSort(Array(1000, 999, 998, 997)).toList == List(997, 998, 999, 1000))
-    require(quickSort(Array(999999, 999998, 999997, 999996,
+    require(quickSort_Pivot_First(Array(1000, 999, 998)).toList == List(998, 999, 1000))
+    require(quickSort_Pivot_First(Array(1000, 999, 998, 997)).toList == List(997, 998, 999, 1000))
+    require(quickSort_Pivot_First(Array(999999, 999998, 999997, 999996,
       999995, 999994, 999993, 999992, 999991, 999990, 999989,
       999987, 999986, 999985, 999984, 999983, 999982, 999981, 999980,
       999979, 999978, 999977, 999976, 999975, 999974, 999973, 999972)).toList ==
@@ -60,10 +60,14 @@ object Main {
         999983, 999984, 999985, 999986, 999987, 999989, 999990, 999991, 999992, 999993, 999994, 999995,
         999996, 999997, 999998, 999999))
     val line: Array[Int] = scala.io.Source.fromResource("quicksort.txt").getLines().map(_.toInt).to[Array]
-    require(quickSort(line).toList == (1 to 10000).toList)
+    require(quickSort_Pivot_First(line).toList == (1 to 10000).toList)
 
     // quick sort algorithm fails for this case.
-    val bigArray: Array[Int] = (0 to 50000).reverse.toArray
-    require(quickSort(bigArray).toList == (0 to 50000).toList)
+    val bigArray: Array[Int] = (0 to 60000).reverse.toArray
+    require(quickSort_Pivot_First(bigArray).toList == (0 to 60000).toList)
+    require(quickSortPivotFirst_(bigArray).toList == (0 to 60000).toList)
+
+    println(quickSort_Pivot_First(Array(4, 5, 6, 8, 1, 2, 3)).toList)
+    println(quickSortPivotFirst_(Array(4, 5, 6, 8, 1, 2, 3)).toList)
   }
 }

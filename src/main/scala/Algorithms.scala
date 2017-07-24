@@ -2,6 +2,12 @@ import scala.collection.mutable
 
 /**
   * Created by afsalthaj on 7/16/17.
+  * Fundamental divide and conquer algorithms that performs better for
+  * not-so-obvious reasons. Plus, giving a sense of how easy/difficult
+  * it is to implement in a hybrid/mostly-functional language like Scala.
+  * The algorithms are implemented based on Stanford's Divide and Conquer,
+  * Randomization MOOC. Some of the run time is calculated by making use of
+  * Master theorem (Read anywhere).
   */
 object Algorithms {
   /**
@@ -94,13 +100,20 @@ object Algorithms {
     * Please note that, the `strategy` applied before calling
     * recursion is based on:
     * https://stackoverflow.com/questions/33815273/quicksort-worst-case-results-in-stack-overflow#33816144
+    * Please note that the complexity came into picture because of the
+    * complexity O(n^^2), for already sorted array
     */
-  def quickSort(inputArray: Array[Int]): Array[Int] = {
+  def quickSort_Pivot_First(inputArray: Array[Int]): Array[Int] = {
+    var numberOfComparisons = 0
+
     def partitionSubroutine(pivotElementIndex: Int, deadEnd: Int): Unit = {
+
       var i = pivotElementIndex + 1
       val pivotElement = inputArray(pivotElementIndex)
       val j = (pivotElementIndex + 1) to deadEnd
+
       j.foreach(index => {
+        numberOfComparisons += 1
         if (inputArray(index) < pivotElement) {
           if (i != index) {
             val temp = inputArray(i)
@@ -110,14 +123,15 @@ object Algorithms {
           i += 1
         }
       })
+
       val temp = inputArray(pivotElementIndex)
       inputArray(pivotElementIndex) = inputArray(i - 1)
       inputArray(i - 1) = temp
 
-      var leftStrategy = (i - 2) - pivotElementIndex
-      var righStratgy  = (deadEnd - i)
+      val leftStrategy = (i - 2) - pivotElementIndex
+      val rightStrategy = deadEnd - i
 
-      if (leftStrategy <= righStratgy) {
+      if (leftStrategy <= rightStrategy) {
         if (pivotElementIndex <= (i - 2)) {
           partitionSubroutine(pivotElementIndex, i - 2)
         }
@@ -135,7 +149,9 @@ object Algorithms {
         }
       }
     }
+
     partitionSubroutine(0, inputArray.length - 1)
+    println(s"The number of comparisons made is $numberOfComparisons")
     inputArray
   }
 
@@ -146,11 +162,14 @@ object Algorithms {
     * the strategy to avoid stack overflow.
     * https://stackoverflow.com/questions/33815273/quicksort-worst-case-results-in-stack-overflow#33816144
     */
-  def quickSort_(array: Array[Int]): Array[Int] = {
+  def quickSortPivotFirst_(array: Array[Int]): Array[Int] = {
+    var numberOfComparisons = 0
+
     def quickSortM(A: Array[Int], l: Int, r: Int): Array[Int] = {
       def partitionSubroutine(l: Int, r: Int): Int = {
         var i = l + 1
         ((l + 1) to r).foreach(index => {
+          numberOfComparisons += 1
           if (A(index) < A(l)) {
             if (i != index) {
               val temp = A(i)
@@ -160,19 +179,17 @@ object Algorithms {
             i += 1
           }
         })
+
         val temp = A(l)
         A(l) = A(i - 1)
         A(i - 1) = temp
-
         i - 1
       }
 
-      if (r - l < 1) {
-        A
-      }
+      if (r - l < 1) A
       else {
         val p = partitionSubroutine(l, r)
-        if (((p - 1) - l ) <= (r - (p + 1))) {
+        if (((p - 1) - l) <= (r - (p + 1))) {
           quickSortM(A, l, p - 1)
           quickSortM(A, p + 1, r)
         }
@@ -183,6 +200,8 @@ object Algorithms {
       }
     }
 
-    quickSortM(array, 0, array.length - 1)
+    val result = quickSortM(array, 0, array.length - 1)
+    println(s"the number of comparisons made is $numberOfComparisons")
+    result
   }
 }
