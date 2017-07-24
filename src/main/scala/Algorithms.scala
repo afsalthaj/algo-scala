@@ -103,9 +103,8 @@ object Algorithms {
     * Please note that the complexity came into picture because of the
     * complexity O(n^^2), for already sorted array
     */
-  def quickSort_Pivot_First(inputArray: Array[Int]): Array[Int] = {
+  def quickSortPivotFirst(inputArray: Array[Int]): Array[Int] = {
     var numberOfComparisons = 0
-
     def partitionSubroutine(pivotElementIndex: Int, deadEnd: Int): Unit = {
 
       var i = pivotElementIndex + 1
@@ -161,10 +160,12 @@ object Algorithms {
     * to the subroutine explicitly. The only difference is `easy to understand`
     * the strategy to avoid stack overflow.
     * https://stackoverflow.com/questions/33815273/quicksort-worst-case-results-in-stack-overflow#33816144
+    * However, the below algorithm implementation is likely to perform faster due to lesser number of
+    * steps between successive recursions. It is just 1 if condition, followed by the recursion.
+    * To be noted that, the number of comparisons is equal.
     */
   def quickSortPivotFirst_(array: Array[Int]): Array[Int] = {
     var numberOfComparisons = 0
-
     def quickSortM(A: Array[Int], l: Int, r: Int): Array[Int] = {
       def partitionSubroutine(l: Int, r: Int): Int = {
         var i = l + 1
