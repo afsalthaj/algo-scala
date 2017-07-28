@@ -1,4 +1,4 @@
-import Algorithms._
+import DivideAndConquer._
 
 import scala.collection.{mutable => m}
 
@@ -30,43 +30,26 @@ object Main {
     require(quickSortPivotFirst(Array(3, 8, 2, 5, 1, 4, 7, 6)).toList == List(1, 2, 3, 4, 5, 6, 7, 8))
     require(quickSortPivotFirst(Array(3, 8, 2, 5, 1, 4, 7)).toList == List(1, 2, 3, 4, 5, 7, 8))
     require(quickSortPivotFirst(Array(4, 6, 5)).toList == List(4, 5, 6))
+    require(quickSortPivotFirst_(Array(4, 6, 5)).toList == List(4, 5, 6))
     require(quickSortPivotFirst(Array(3, 8)).toList == List(3, 8))
     require(quickSortPivotFirst(Array(8)).toList == List(8))
     //  require(quickSort(Array()).toList == Nil)
     require(quickSortPivotFirst(Array(1000, 999, 998)).toList == List(998, 999, 1000))
     require(quickSortPivotFirst(Array(1000, 999, 998, 997)).toList == List(997, 998, 999, 1000))
-    require(quickSortPivotFirst(Array(999999, 999998, 999997, 999996,
-      999995, 999994, 999993, 999992, 999991, 999990, 999989,
-      999987, 999986, 999985, 999984, 999983, 999982, 999981, 999980,
-      999979, 999978, 999977, 999976, 999975, 999974, 999973, 999972)).toList ==
-      List(999972, 999973, 999974, 999975, 999976, 999977, 999978, 999979, 999980, 999981, 999982,
-        999983, 999984, 999985, 999986, 999987, 999989, 999990, 999991, 999992, 999993, 999994, 999995,
-        999996, 999997, 999998, 999999))
     require(quickSortPivotFirst(Array(3, 8, 2, 5, 1, 4, 7, 6)).toList == List(1, 2, 3, 4, 5, 6, 7, 8))
     require(quickSortPivotFirst(Array(3, 8, 2, 5, 1, 4, 7)).toList == List(1, 2, 3, 4, 5, 7, 8))
     require(quickSortPivotFirst(Array(4, 6, 5)).toList == List(4, 5, 6))
     require(quickSortPivotFirst(Array(3, 8)).toList == List(3, 8))
     require(quickSortPivotFirst(Array(8)).toList == List(8))
-    //    require(quickSort(Array()).toList == Nil)
     require(quickSortPivotFirst(Array(1000, 999, 998)).toList == List(998, 999, 1000))
     require(quickSortPivotFirst(Array(1000, 999, 998, 997)).toList == List(997, 998, 999, 1000))
-    require(quickSortPivotFirst(Array(999999, 999998, 999997, 999996,
-      999995, 999994, 999993, 999992, 999991, 999990, 999989,
-      999987, 999986, 999985, 999984, 999983, 999982, 999981, 999980,
-      999979, 999978, 999977, 999976, 999975, 999974, 999973, 999972)).toList ==
-      List(999972, 999973, 999974, 999975, 999976, 999977, 999978, 999979, 999980, 999981, 999982,
-        999983, 999984, 999985, 999986, 999987, 999989, 999990, 999991, 999992, 999993, 999994, 999995,
-        999996, 999997, 999998, 999999))
-    val line: Array[Int] = scala.io.Source.fromResource("quicksort.txt").getLines().map(_.toInt).to[Array]
-    require(quickSortPivotFirst(line).toList == (1 to 10000).toList)
-    // quick sort algorithm fails if the input is too higher - because of the stack exception.
-    // This happens because, the divide and conquer algorithm doesn't work properly for an already
-    // sorted algorithm because the divide provides an imbalanced pair of partitions in terms of the
-    // the number of elements.
-    val bigArray: Array[Int] = (0 to 60000).reverse.toArray
-    require(quickSortPivotFirst(bigArray).toList == (0 to 60000).toList)
-    require(quickSortPivotFirst_(bigArray).toList == (0 to 60000).toList)
-    println(quickSortPivotFirst(Array(4, 5, 6, 8, 1, 2, 3)).toList)
-    println(quickSortPivotFirst_(Array(4, 5, 6, 8, 1, 2, 3)).toList)
+    require(quickSortPivotFirst(Array(1000, 999, 998, 997)).toList == List(997, 998, 999, 1000))
+    require(quickSortPivotFirst(Array(1000, 999, 998, 997)).toList == List(997, 998, 999, 1000))
+    val line: List[Int] = scala.io.Source.fromResource("quicksort.txt").getLines().map(_.toInt).toList
+    // the number of elements when the pivot element is the first element is 162085
+    require(quickSortPivotFirst(line.toArray).toList == (1 to 10000).toList)
+    // number of comparisons when pivot element is the last element is 164123
+    require(quickSortPivotLast(line.toArray).toList == (1 to 10000).toList)
+    require(quickSortPivotMedian(line.toArray).toList == (1 to 10000).toList)
   }
 }

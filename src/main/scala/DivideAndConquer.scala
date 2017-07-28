@@ -1,3 +1,5 @@
+import org.slf4j.{Logger, LoggerFactory}
+
 import scala.collection.mutable
 
 /**
@@ -9,7 +11,9 @@ import scala.collection.mutable
   * Randomization MOOC. Some of the run time is calculated by making use of
   * Master theorem (Read anywhere).
   */
-object Algorithms {
+object DivideAndConquer {
+  val logger: Logger = LoggerFactory.getLogger("Divide and Conquer")
+
   /**
     * Karatsuba multiplication with lesser runtime (big O) than
     * usual multiplication algorithms
@@ -105,6 +109,7 @@ object Algorithms {
     */
   def quickSortPivotFirst(inputArray: Array[Int]): Array[Int] = {
     var numberOfComparisons = 0
+
     def partitionSubroutine(pivotElementIndex: Int, deadEnd: Int): Unit = {
 
       var i = pivotElementIndex + 1
@@ -150,7 +155,7 @@ object Algorithms {
     }
 
     partitionSubroutine(0, inputArray.length - 1)
-    println(s"The number of comparisons made is $numberOfComparisons")
+    logger.info(s"The number of comparisons made when the pivot element is first is $numberOfComparisons")
     inputArray
   }
 
@@ -160,17 +165,40 @@ object Algorithms {
     * to the subroutine explicitly. The only difference is `easy to understand`
     * the strategy to avoid stack overflow.
     * https://stackoverflow.com/questions/33815273/quicksort-worst-case-results-in-stack-overflow#33816144
-    * However, the below algorithm implementation is likely to perform faster due to lesser number of
-    * steps between successive recursions. It is just 1 if condition, followed by the recursion.
-    * To be noted that, the number of comparisons is equal.
+    * Performs better as the number of outside operations are lesser when compared to the first
+    * implementation.
     */
   def quickSortPivotFirst_(array: Array[Int]): Array[Int] = {
     var numberOfComparisons = 0
+
     def quickSortM(A: Array[Int], l: Int, r: Int): Array[Int] = {
       def partitionSubroutine(l: Int, r: Int): Int = {
+        numberOfComparisons += r - l
+
+        if ((l to r).length > 3) {
+          val medianIndex = {
+            val middleIndex = (r - l) / 2
+            val firstElement = A(l)
+            val lastElement = A(r)
+            val middleElement = A(middleIndex)
+            if (middleElement > firstElement && middleElement < lastElement
+              || middleElement < firstElement && middleElement > lastElement)
+              (r - l) / 2
+            else if (firstElement > middleElement && firstElement < lastElement
+              || firstElement < middleElement && firstElement > lastElement)
+              l
+            else r
+          }
+
+          if (medianIndex != l) {
+            val temp1 = A(l)
+            array(l) = A(medianIndex)
+            A(medianIndex) = temp1
+          }
+        }
+
         var i = l + 1
         ((l + 1) to r).foreach(index => {
-          numberOfComparisons += 1
           if (A(index) < A(l)) {
             if (i != index) {
               val temp = A(i)
@@ -202,7 +230,134 @@ object Algorithms {
     }
 
     val result = quickSortM(array, 0, array.length - 1)
-    println(s"the number of comparisons made is $numberOfComparisons")
+    logger.info(s"the number of comparisons made in another implementation of quick sort" +
+      s"where pivot element is first: $numberOfComparisons")
     result
+  }
+
+  /**
+    * To verify the number of comparisons for a given sequence of pivots,
+    * when the pivot element is chosen to be the last element in every recursion.
+    * There will be duplicate code, but intention here is not re-using functionalities
+    * but performance of an algorithm in different scenarios.
+    */
+  def quickSortPivotLast(inputArrayLast: Array[Int]): Array[Int] = {
+    var numberOfComparisons1 = 0
+
+    def partitionSubroutine(pivotElementIndex: Int, deadEnd: Int): Unit = {
+      numberOfComparisons1 += (deadEnd - pivotElementIndex)
+
+      val temp1 = inputArrayLast(pivotElementIndex)
+      inputArrayLast(pivotElementIndex) = inputArrayLast(deadEnd)
+      inputArrayLast(deadEnd) = temp1
+
+      var i = pivotElementIndex + 1
+      val pivotElement = inputArrayLast(pivotElementIndex)
+      val j = (pivotElementIndex + 1) to deadEnd
+
+      j.foreach(index => {
+        if (inputArrayLast(index) < pivotElement) {
+          if (i != index) {
+            val temp = inputArrayLast(i)
+            inputArrayLast(i) = inputArrayLast(index)
+            inputArrayLast(index) = temp
+          }
+          i += 1
+        }
+      })
+
+      val temp = inputArrayLast(pivotElementIndex)
+      inputArrayLast(pivotElementIndex) = inputArrayLast(i - 1)
+      inputArrayLast(i - 1) = temp
+
+      val leftStrategy = (i - 2) - pivotElementIndex
+      val rightStrategy = deadEnd - i
+
+      if (leftStrategy <= rightStrategy) {
+        if (pivotElementIndex <= (i - 2)) {
+          partitionSubroutine(pivotElementIndex, i - 2)
+        }
+        if (i <= deadEnd) {
+          partitionSubroutine(i, deadEnd)
+        }
+      }
+
+      else {
+        if (i <= deadEnd) {
+          partitionSubroutine(i, deadEnd)
+        }
+        if (pivotElementIndex <= (i - 2)) {
+          partitionSubroutine(pivotElementIndex, i - 2)
+        }
+      }
+    }
+
+    partitionSubroutine(0, inputArrayLast.length - 1)
+    logger.info(s"The number of comparisons when pivot element is last: $numberOfComparisons1")
+    inputArrayLast
+  }
+
+  /**
+    * Quick sort using median-of-three approach. This is to ensure that
+    */
+  def quickSortPivotMedian(inputArrayLast: Array[Int]): Array[Int] = {
+    var numberOfComparisons = 0
+
+    def partitionSubroutine(pivotElementIndex: Int, deadEnd: Int): Unit = {
+      numberOfComparisons += (deadEnd - pivotElementIndex)
+      val length = (pivotElementIndex to deadEnd).size
+      // Well, unfortunately, it is that complex to find a middle element.
+      val middleIndex = pivotElementIndex + (deadEnd - pivotElementIndex) / 2
+      val medianIndex = if (length >= 2) {
+        val firstElement = inputArrayLast(pivotElementIndex)
+        val lastElement = inputArrayLast(deadEnd)
+        val middleElement = inputArrayLast(middleIndex)
+        if (middleElement > firstElement && middleElement < lastElement
+          || middleElement < firstElement && middleElement > lastElement)
+          middleIndex
+        else if (firstElement > middleElement && firstElement < lastElement
+          || firstElement < middleElement && firstElement > lastElement)
+          pivotElementIndex
+        else deadEnd
+      }
+      else pivotElementIndex
+
+
+      if (medianIndex != pivotElementIndex) {
+        val temp = inputArrayLast(pivotElementIndex)
+        inputArrayLast(pivotElementIndex) = inputArrayLast(medianIndex)
+        inputArrayLast(medianIndex) = temp
+      }
+
+      var i = pivotElementIndex + 1
+      val pivotElement = inputArrayLast(pivotElementIndex)
+      val j = (pivotElementIndex + 1) to deadEnd
+
+      j.foreach(index => {
+        if (inputArrayLast(index) < pivotElement) {
+          if (i != index) {
+            val temp = inputArrayLast(i)
+            inputArrayLast(i) = inputArrayLast(index)
+            inputArrayLast(index) = temp
+          }
+          i += 1
+        }
+      })
+
+      val temp = inputArrayLast(pivotElementIndex)
+      inputArrayLast(pivotElementIndex) = inputArrayLast(i - 1)
+      inputArrayLast(i - 1) = temp
+
+      if (pivotElementIndex <= (i - 2)) {
+        partitionSubroutine(pivotElementIndex, i - 2)
+      }
+      if (i <= deadEnd) {
+        partitionSubroutine(i, deadEnd)
+      }
+    }
+
+    partitionSubroutine(0, inputArrayLast.length - 1)
+    logger.info(s"The number of comparisons when pivot element is median of three: $numberOfComparisons")
+    inputArrayLast
   }
 }
