@@ -7,9 +7,9 @@ import scala.collection.mutable
   * Fundamental divide and conquer algorithms that performs better for
   * not-so-obvious reasons. Plus, giving a sense of how easy/difficult
   * it is to implement in a hybrid/mostly-functional language like Scala.
-  * The algorithms are implemented based on Stanford's Divide and Conquer,
-  * Randomization MOOC. Some of the run time is calculated by making use of
-  * Master theorem (Read anywhere).
+  * The algorithms are implemented based on the theory sessions in 
+  * Stanford's Divide and Conquer, Randomization MOOC. Some of the run time is 
+  * calculated by making use of Master theorem (Read anywhere).
   */
 object DivideAndConquer {
   val logger: Logger = LoggerFactory.getLogger("Divide and Conquer")
