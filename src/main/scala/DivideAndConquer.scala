@@ -111,7 +111,6 @@ object DivideAndConquer {
     var numberOfComparisons = 0
 
     def partitionSubroutine(pivotElementIndex: Int, deadEnd: Int): Unit = {
-
       var i = pivotElementIndex + 1
       val pivotElement = inputArray(pivotElementIndex)
       val j = (pivotElementIndex + 1) to deadEnd
