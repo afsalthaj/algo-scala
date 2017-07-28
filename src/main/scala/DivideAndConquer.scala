@@ -321,7 +321,6 @@ object DivideAndConquer {
       }
       else pivotElementIndex
 
-
       if (medianIndex != pivotElementIndex) {
         val temp = inputArrayLast(pivotElementIndex)
         inputArrayLast(pivotElementIndex) = inputArrayLast(medianIndex)
