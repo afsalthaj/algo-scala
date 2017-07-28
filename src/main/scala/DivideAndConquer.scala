@@ -174,28 +174,6 @@ object DivideAndConquer {
       def partitionSubroutine(l: Int, r: Int): Int = {
         numberOfComparisons += r - l
 
-        if ((l to r).length > 3) {
-          val medianIndex = {
-            val middleIndex = (r - l) / 2
-            val firstElement = A(l)
-            val lastElement = A(r)
-            val middleElement = A(middleIndex)
-            if (middleElement > firstElement && middleElement < lastElement
-              || middleElement < firstElement && middleElement > lastElement)
-              (r - l) / 2
-            else if (firstElement > middleElement && firstElement < lastElement
-              || firstElement < middleElement && firstElement > lastElement)
-              l
-            else r
-          }
-
-          if (medianIndex != l) {
-            val temp1 = A(l)
-            array(l) = A(medianIndex)
-            A(medianIndex) = temp1
-          }
-        }
-
         var i = l + 1
         ((l + 1) to r).foreach(index => {
           if (A(index) < A(l)) {
@@ -297,7 +275,9 @@ object DivideAndConquer {
   }
 
   /**
-    * Quick sort using median-of-three approach. This is to ensure that
+    * Quick sort using median-of-three approach. This is to reduce the number of comparisons
+    * and for better performance. Please note the run time of a quick sort algorithm with balanced
+    * partition is n log n
     */
   def quickSortPivotMedian(inputArrayLast: Array[Int]): Array[Int] = {
     var numberOfComparisons = 0
