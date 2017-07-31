@@ -2,6 +2,8 @@ import org.slf4j.{Logger, LoggerFactory}
 
 import scala.collection.mutable
 
+import scalaz._, Scalaz._
+
 /**
   * Created by afsalthaj on 7/16/17.
   * Fundamental divide and conquer algorithms that performs better for
@@ -66,6 +68,7 @@ object DivideAndConquer {
       else inner(a, b.tail, acc += b.head, inversions + a.size)
     }
 
+    println(x)
     if (x.size < 2) (0, x)
     else {
       val firstSection = x.take(x.size / 2)
@@ -338,4 +341,9 @@ object DivideAndConquer {
     logger.info(s"The number of comparisons when pivot element is median of three: $numberOfComparisons")
     inputArrayLast
   }
+
+  /**
+    * Minimum cut algorithm to be placed here soon.
+    */
+  def minimumCutAlgorithm(): Map[Int, List[Int]] = ???
 }
