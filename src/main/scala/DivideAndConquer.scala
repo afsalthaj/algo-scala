@@ -344,6 +344,10 @@ object DivideAndConquer {
 
   /**
     * Minimum cut algorithm to be placed here soon.
+    * The success probability is (1/n^^2). Please refer
+    * lecture notes. Also, the number of min cuts a tree of n
+    * vertices can have is n-1 and for a graph with n vertices
+    * it'l be less than or equal to n C 2 or (n (n-1)/2)
     */
   def minimumCutAlgorithm(): Map[Int, List[Int]] = ???
 }
