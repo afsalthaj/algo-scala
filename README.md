@@ -1,4 +1,8 @@
+A more generic datastructures-&-algorithms problems and solutions is in https://github.com/afsalthaj/algo-in-scala.
+
+
 ## algo-scala
+
 Trying some famous-infamous divide and conquer algorithms in Computer Science, just to see how easy/difficult it is to attain the performance marked by the big O of the algorithm with a programming language like Scala!!
 
 This is in progress.
